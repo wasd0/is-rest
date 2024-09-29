@@ -1,0 +1,33 @@
+server:
+  port: 8400
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USR:wasd}
+    password: ${DB_PWD:123}
+    url: jdbc:postgresql://database:5432/is
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 50
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: false
+    open-in-view: false
+  
+  liquibase:
+    change-log: classpath:db/changelogs/changelog-master.xml
+  
+  web:
+    locale: en
+
+jwt:
+  secret: testsecret
+  liveTime: 900
+logging:
+  level:
+    web: warn
