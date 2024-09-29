@@ -7,6 +7,7 @@ import com.wasd.isrest.mapper.CustomerMapper
 import com.wasd.isrest.model.customer.CustomerGetRequest
 import com.wasd.isrest.model.customer.CustomerResponse
 import com.wasd.isrest.repository.CustomerRepository
+import com.wasd.isrest.service.AbstractBaseEntityService
 import com.wasd.isrest.service.CountryService
 import com.wasd.isrest.service.CustomerService
 import com.wasd.isrest.utils.DateTimeHolder
@@ -20,14 +21,13 @@ class CustomerServiceImpl(
     private val customerMapper: CustomerMapper,
     private val countryService: CountryService,
     private val dateTimeHolder: DateTimeHolder
-) : CustomerService {
+) : AbstractBaseEntityService<Customer, Long>(customerRepository, exceptionProvider), CustomerService {
 
     @Transactional
     override fun createOrGet(request: CustomerGetRequest): CustomerResponse {
 
         if (request.id != null) {
-            val customer = customerRepository.findById(request.id)
-                .orElseThrow({ exceptionProvider.notFoundException(request.id) })
+            val customer = getEntity(request.id)
             return customerMapper.customerToSingleResponse(customer)
         } else if (request.telegramId != null) {
             val customer = customerRepository.findByTelegramId(request.telegramId)
