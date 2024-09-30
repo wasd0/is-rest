@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CustomerServiceImpl(
     private val customerRepository: CustomerRepository,
-    private val exceptionProvider: ExceptionProvider,
+    exceptionProvider: ExceptionProvider,
     private val customerMapper: CustomerMapper,
     private val countryService: CountryService,
     private val dateTimeHolder: DateTimeHolder
@@ -26,18 +26,22 @@ class CustomerServiceImpl(
     @Transactional
     override fun createOrGet(request: CustomerGetRequest): CustomerResponse {
 
+        var customer: Customer? = null
+        
         if (request.id != null) {
-            val customer = getEntity(request.id)
-            return customerMapper.customerToSingleResponse(customer)
+            customer = findEntity(request.id)
         } else if (request.telegramId != null) {
-            val customer = customerRepository.findByTelegramId(request.telegramId)
-                .orElseThrow({ exceptionProvider.notFoundException(request.telegramId) })
+            customer = customerRepository.findByTelegramId(request.telegramId)
+        }
+        
+        if (customer != null) {
             return customerMapper.customerToSingleResponse(customer)
         }
 
-        val new = Customer()
-        new.country = countryService.findByCodeAndIso(CountryKeys.RU_CODE, CountryKeys.RU_ISO)
-        new.createDate = dateTimeHolder.now()
-        return customerMapper.customerToSingleResponse(customerRepository.save(new))
+        customer = Customer()
+        customer.country = countryService.findByCodeAndIso(CountryKeys.RU_CODE, CountryKeys.RU_ISO)
+        customer.createDate = dateTimeHolder.now()
+        customer.telegramId = request.telegramId
+        return customerMapper.customerToSingleResponse(customerRepository.save(customer))
     }
 }
