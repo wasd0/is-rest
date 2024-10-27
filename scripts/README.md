@@ -7,4 +7,4 @@
   deletes the built file
 
 - ### [migrations_run.sh](migrations_run.sh)
-  runs migrations from [migrations](..%2Fstorage%2Fmigrations) folder
+  runs migrations
