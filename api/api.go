@@ -20,7 +20,7 @@ func RenderError(w http.ResponseWriter, r *http.Request, servErr *dto.ServErr) {
 	}
 }
 
-func Render[T any](w http.ResponseWriter, r *http.Request, v render.Renderer) {
+func Render(w http.ResponseWriter, r *http.Request, v render.Renderer) {
 	if err := render.Render(w, r, v); err != nil {
 		RenderError(w, r, dto.InternalError(err))
 	}
