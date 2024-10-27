@@ -119,7 +119,7 @@ func initOutputFile(cfg *config.Config) *os.File {
 	logFilePath, err := utils.CreateDirectoriesIfNotExists(cfg.LogPath)
 
 	if err != nil {
-		panic(fmt.Errorf("errorUtils while creating log file directories by path: %v", cfg.LogPath))
+		panic(fmt.Errorf("errorUtils while creating log file directories by path: %v, err: %v", cfg.LogPath, err))
 	}
 
 	logFilePath.WriteString(utils.Separator)

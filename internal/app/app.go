@@ -37,6 +37,7 @@ func runServer(ctx context.Context) {
 		apis     = apiProvider.Init(services)
 	)
 
+	storage.Migrate(pg.Db)
 	api := chi.SetupServer(cfg, apis, &logFormatter)
 	serverCallback := api.MustRun()
 
