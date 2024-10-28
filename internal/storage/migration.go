@@ -13,7 +13,7 @@ type gooseLogger struct {
 }
 
 func (g *gooseLogger) Fatalf(format string, v ...interface{}) {
-	logger.Log().Fatalf(errors.New("Migration failed"), fmt.Sprintf(format, v...))
+	logger.Log().Fatalf(errors.New("migration failed"), fmt.Sprintf(format, v...))
 }
 
 func (g *gooseLogger) Printf(format string, v ...interface{}) {
