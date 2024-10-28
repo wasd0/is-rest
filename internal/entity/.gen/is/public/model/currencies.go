@@ -7,13 +7,10 @@
 
 package model
 
-import (
-	"time"
-)
-
-type GooseDbVersion struct {
+type Currencies struct {
 	ID        int32 `sql:"primary_key"`
-	VersionID int64
-	IsApplied bool
-	Tstamp    time.Time
+	Code      string
+	Dimension int32
+	MinValue  *int64
+	MaxValue  *int64
 }

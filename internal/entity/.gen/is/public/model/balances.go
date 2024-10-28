@@ -7,13 +7,9 @@
 
 package model
 
-import (
-	"time"
-)
-
-type GooseDbVersion struct {
-	ID        int32 `sql:"primary_key"`
-	VersionID int64
-	IsApplied bool
-	Tstamp    time.Time
+type Balances struct {
+	ID         int64 `sql:"primary_key"`
+	CustomerID int64
+	Sum        int64
+	CurrencyID int32
 }
