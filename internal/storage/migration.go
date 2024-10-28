@@ -2,19 +2,31 @@ package storage
 
 import (
 	"database/sql"
-	"embed"
+	"errors"
+	"fmt"
 	"github.com/pressly/goose/v3"
 	"os"
 	"wasd0/is-rest/pkg/logger"
 )
 
-var embedMigrations embed.FS
+type gooseLogger struct {
+}
+
+func (g *gooseLogger) Fatalf(format string, v ...interface{}) {
+	logger.Log().Fatalf(errors.New("Migration failed"), fmt.Sprintf(format, v...))
+}
+
+func (g *gooseLogger) Printf(format string, v ...interface{}) {
+	logger.Log().Infof(format, v...)
+}
 
 func Migrate(db *sql.DB) {
 
 	if err := goose.SetDialect("postgres"); err != nil {
 		logger.Log().Fatal(err, "goose.SetDialect")
 	}
+
+	goose.SetLogger(&gooseLogger{})
 
 	migrationsPath := os.Getenv("MIGRATIONS_PATH")
 
