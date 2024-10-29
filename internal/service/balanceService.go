@@ -54,14 +54,26 @@ func (b *balanceServiceImpl) GetByCustomerAndCurrency(request dto.BalanceGetRequ
 	if currency, err := b.currencyService.GetByCode(currencyCode); err != nil {
 		return nil, err
 	} else {
-		if balance, balanceErr := b.balanceRepository.FindByCustomerAndCurrency(request.CustomerId, currency.ID); balanceErr != nil {
-			if errors.Is(balanceErr, qrm.ErrNoRows) {
-				return nil, dto.BadRequest(balanceErr, "balance not found by customer and currency")
+		if request.CustomerId != nil {
+			if balance, balanceErr := b.balanceRepository.FindByCustomerAndCurrency(*request.CustomerId, currency.ID); balanceErr != nil {
+				if errors.Is(balanceErr, qrm.ErrNoRows) {
+					return nil, dto.BadRequest(balanceErr, "balance not found by customer and currency")
+				} else {
+					return nil, dto.InternalError(balanceErr)
+				}
 			} else {
-				return nil, dto.InternalError(balanceErr)
+				return mapper.BalanceToGetResponse(*balance, *currency), nil
 			}
 		} else {
-			return mapper.BalanceToGetResponse(*balance, *currency), nil
+			if balance, balanceErr := b.balanceRepository.FindByCustomerTelegramIdAndCurrency(*request.TelegramId, currency.ID); balanceErr != nil {
+				if errors.Is(balanceErr, qrm.ErrNoRows) {
+					return nil, dto.BadRequest(balanceErr, "balance not found by customer and currency")
+				} else {
+					return nil, dto.InternalError(balanceErr)
+				}
+			} else {
+				return mapper.BalanceToGetResponse(*balance, *currency), nil
+			}
 		}
 	}
 }

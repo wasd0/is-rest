@@ -41,6 +41,22 @@ services:
     depends_on:
       backend:
         condition: service_started
+      redis:
+        condition: service_started
+  
+  redis:
+    container_name: is-cache
+    image: redis:7.4.1
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_PASSWORD: 123
+      REDIS_USER: default
+    command: redis-server --save 20 1 --loglevel warning --requirepass 123 --protected-mode yes
+    networks:
+      is:
+        aliases:
+          - "iscache"
 
 networks:
   is:

@@ -44,16 +44,29 @@ func (c *BalanceApi) create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *BalanceApi) getByCustomer(w http.ResponseWriter, r *http.Request) {
-	customerId := r.URL.Query().Get("customerId")
 	request := dto.BalanceGetRequest{}
-	if num, err := strconv.ParseInt(customerId, 10, 64); err != nil {
-		RenderError(w, r, dto.InternalError(err))
+	customerId := r.URL.Query().Get("customerId")
+	telegramId := r.URL.Query().Get("telegramId")
+	currency := r.URL.Query().Get("currency")
+	if currency != "" {
+		request.CurrencyCode = &currency
+	}
+	if customerId == "" && telegramId == "" {
+		RenderError(w, r, dto.BadRequest(nil, "missing customer id or telegram id"))
 		return
-	} else {
-		currency := r.URL.Query().Get("currency")
-		request.CustomerId = num
-		if currency != "" {
-			request.CurrencyCode = &currency
+	}
+	if customerId != "" {
+		if id, err := strconv.ParseInt(customerId, 10, 64); err != nil {
+			RenderError(w, r, dto.BadRequest(err, "invalid customer id"))
+		} else {
+			request.CustomerId = &id
+		}
+	}
+	if telegramId != "" {
+		if id, err := strconv.ParseInt(telegramId, 10, 64); err != nil {
+			RenderError(w, r, dto.BadRequest(err, "invalid telegram id"))
+		} else {
+			request.TelegramId = &id
 		}
 	}
 	if response, err := c.balanceService.GetByCustomerAndCurrency(request); err != nil {
