@@ -2,6 +2,7 @@ package dto
 
 import (
 	"time"
+	"wasd0/is-rest/pkg/logger"
 )
 
 type ServErr struct {
@@ -21,6 +22,7 @@ func BadRequest(err error, msg string) *ServErr {
 }
 
 func InternalError(err error) *ServErr {
+	logger.Log().Error(err, err.Error())
 	return &ServErr{
 		Code: 500,
 		Msg:  "Internal Server Error",

@@ -18,7 +18,7 @@ func NewBalanceApi(balanceService service.BalanceService) *BalanceApi {
 }
 
 func (c *BalanceApi) Register() (string, func(router chi.Router)) {
-	return "/api/v1/balances", c.Handle
+	return "/api/v1/balance", c.Handle
 }
 
 func (c *BalanceApi) Handle(router chi.Router) {
@@ -38,36 +38,28 @@ func (c *BalanceApi) create(w http.ResponseWriter, r *http.Request) {
 	if response, err := c.balanceService.Create(request); err != nil {
 		RenderError(w, r, err)
 	} else {
-		restResponse := dto.RestResponse[dto.BalanceCreateResponse]{Data: &response}
+		restResponse := dto.RestResponse[dto.BalanceCreateResponse]{Data: response}
 		Render(w, r, &restResponse)
 	}
 }
 
 func (c *BalanceApi) getByCustomer(w http.ResponseWriter, r *http.Request) {
-
 	customerId := r.URL.Query().Get("customerId")
-
 	request := dto.BalanceGetRequest{}
-
 	if num, err := strconv.ParseInt(customerId, 10, 64); err != nil {
 		RenderError(w, r, dto.InternalError(err))
 		return
 	} else {
 		currency := r.URL.Query().Get("currency")
-
 		request.CustomerId = num
-		request.Currency = &currency
+		if currency != "" {
+			request.CurrencyCode = &currency
+		}
 	}
-
-	if err := render.Bind(r, &request); err != nil {
-		RenderError(w, r, dto.BadRequest(err, "failed get balance request"))
-		return
-	}
-
-	if response, err := c.balanceService.GetByCustomer(request); err != nil {
+	if response, err := c.balanceService.GetByCustomerAndCurrency(request); err != nil {
 		RenderError(w, r, err)
 	} else {
-		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: &response}
+		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: response}
 		Render(w, r, &restResponse)
 	}
 }
@@ -84,7 +76,7 @@ func (c *BalanceApi) getById(w http.ResponseWriter, r *http.Request) {
 	if response, err := c.balanceService.GetById(id); err != nil {
 		RenderError(w, r, err)
 	} else {
-		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: &response}
+		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: response}
 		Render(w, r, &restResponse)
 	}
 }

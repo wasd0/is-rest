@@ -8,8 +8,9 @@ import (
 type ApiProvider struct {
 	services *serviceProvider.ServiceProvider
 
-	defaultApi  *api.DefaultApi
-	customerApi *api.CustomerApi
+	defaultApi *api.DefaultApi
+	customer   *api.CustomerApi
+	balance    *api.BalanceApi
 }
 
 func Init(services *serviceProvider.ServiceProvider) *ApiProvider {
@@ -21,16 +22,24 @@ func (ap *ApiProvider) DefaultApi() *api.DefaultApi {
 		return ap.defaultApi
 	}
 
-	dApi := api.NewDefaultApi()
-	ap.defaultApi = dApi
+	ap.defaultApi = api.NewDefaultApi()
 	return ap.defaultApi
 }
 
 func (ap *ApiProvider) CustomerApi() *api.CustomerApi {
-	if ap.customerApi != nil {
-		return ap.customerApi
+	if ap.customer != nil {
+		return ap.customer
 	}
 
-	ap.customerApi = api.NewCustomerApi(ap.services.CustomerService())
-	return ap.customerApi
+	ap.customer = api.NewCustomerApi(ap.services.CustomerService())
+	return ap.customer
+}
+
+func (ap *ApiProvider) BalanceApi() *api.BalanceApi {
+	if ap.balance != nil {
+		return ap.balance
+	}
+
+	ap.balance = api.NewBalanceApi(ap.services.BalanceService())
+	return ap.balance
 }

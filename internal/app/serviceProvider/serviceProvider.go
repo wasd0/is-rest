@@ -10,6 +10,8 @@ type ServiceProvider struct {
 
 	country  service.CountryService
 	customer service.CustomerService
+	currency service.CurrencyService
+	balance  service.BalanceService
 }
 
 func Init(repos *repoProvider.RepoProvider) *ServiceProvider {
@@ -20,18 +22,30 @@ func (sp *ServiceProvider) CountryService() service.CountryService {
 	if sp.country != nil {
 		return sp.country
 	}
-
-	country := service.InitCountryService(sp.repos.CountryRepository())
-	sp.country = country
-	return country
+	sp.country = service.InitCountryService(sp.repos.CountryRepository())
+	return sp.country
 }
 
 func (sp *ServiceProvider) CustomerService() service.CustomerService {
 	if sp.customer != nil {
 		return sp.customer
 	}
+	sp.customer = service.InitCustomerService(sp.repos.CustomerRepo(), sp.CountryService())
+	return sp.customer
+}
 
-	customer := service.InitCustomerService(sp.repos.CustomerRepo(), sp.CountryService())
-	sp.customer = customer
-	return customer
+func (sp *ServiceProvider) CurrencyService() service.CurrencyService {
+	if sp.currency != nil {
+		return sp.currency
+	}
+	sp.currency = service.InitCurrencyService(sp.repos.CurrencyRepo())
+	return sp.currency
+}
+
+func (sp *ServiceProvider) BalanceService() service.BalanceService {
+	if sp.balance != nil {
+		return sp.balance
+	}
+	sp.balance = service.InitBalanceService(sp.repos.BalanceRepo(), sp.CurrencyService())
+	return sp.balance
 }

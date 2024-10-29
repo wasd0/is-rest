@@ -62,4 +62,5 @@ func setUpRouters(mux *chi.Mux, provider *apiProvider.ApiProvider) {
 	mux.NotFound(provider.DefaultApi().NotFound)
 	mux.MethodNotAllowed(provider.DefaultApi().MethodNotAllowed)
 	mux.Route(provider.CustomerApi().Register())
+	mux.Route(provider.BalanceApi().Register())
 }

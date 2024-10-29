@@ -46,7 +46,7 @@ func (c *CustomerServiceImpl) CreateOrGet(request dto.CustomerGetRequest) (dto.C
 		return c.sendFindResponse(customer)
 	}
 
-	country, err := c.countryService.FindByCodeAndIso(keys.CodeRu, keys.IsoRu)
+	country, err := c.countryService.FindByCodeAndIso(keys.CountryCodeRu, keys.CountryIsoRu)
 
 	if err != nil {
 		logger.Log().Error(err, "customer find error")

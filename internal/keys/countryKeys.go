@@ -1,7 +1,7 @@
 package keys
 
 const (
-	CodeRu = 7
+	CountryCodeRu = 7
 
-	IsoRu = "RU"
+	CountryIsoRu = "RU"
 )
