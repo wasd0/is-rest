@@ -14,6 +14,7 @@ type RepoProvider struct {
 
 	country  repository.CountryRepository
 	customer repository.CustomerRepository
+	balance  repository.BalanceRepository
 }
 
 func Init(db *sql.DB) *RepoProvider {
@@ -46,4 +47,13 @@ func (r *RepoProvider) CustomerRepo() repository.CustomerRepository {
 
 	r.customer = repository.InitCustomerRepo(r.Storage())
 	return r.customer
+}
+
+func (r *RepoProvider) BalanceRepo() repository.BalanceRepository {
+	if r.balance != nil {
+		return r.balance
+	}
+
+	r.balance = repository.InitBalanceRepository(r.Storage())
+	return r.balance
 }

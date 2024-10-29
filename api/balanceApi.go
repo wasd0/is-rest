@@ -1,0 +1,90 @@
+package api
+
+import (
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
+	"net/http"
+	"strconv"
+	"wasd0/is-rest/api/dto"
+	"wasd0/is-rest/internal/service"
+)
+
+type BalanceApi struct {
+	balanceService service.BalanceService
+}
+
+func NewBalanceApi(balanceService service.BalanceService) *BalanceApi {
+	return &BalanceApi{balanceService: balanceService}
+}
+
+func (c *BalanceApi) Register() (string, func(router chi.Router)) {
+	return "/api/v1/balances", c.Handle
+}
+
+func (c *BalanceApi) Handle(router chi.Router) {
+	router.Post("/", c.create)
+	router.Get("/{id}", c.getById)
+	router.Get("/", c.getByCustomer)
+}
+
+func (c *BalanceApi) create(w http.ResponseWriter, r *http.Request) {
+	request := dto.BalanceCreateRequest{}
+
+	if err := render.Bind(r, &request); err != nil {
+		RenderError(w, r, dto.BadRequest(err, "failed get balance request"))
+		return
+	}
+
+	if response, err := c.balanceService.Create(request); err != nil {
+		RenderError(w, r, err)
+	} else {
+		restResponse := dto.RestResponse[dto.BalanceCreateResponse]{Data: &response}
+		Render(w, r, &restResponse)
+	}
+}
+
+func (c *BalanceApi) getByCustomer(w http.ResponseWriter, r *http.Request) {
+
+	customerId := r.URL.Query().Get("customerId")
+
+	request := dto.BalanceGetRequest{}
+
+	if num, err := strconv.ParseInt(customerId, 10, 64); err != nil {
+		RenderError(w, r, dto.InternalError(err))
+		return
+	} else {
+		currency := r.URL.Query().Get("currency")
+
+		request.CustomerId = num
+		request.Currency = &currency
+	}
+
+	if err := render.Bind(r, &request); err != nil {
+		RenderError(w, r, dto.BadRequest(err, "failed get balance request"))
+		return
+	}
+
+	if response, err := c.balanceService.GetByCustomer(request); err != nil {
+		RenderError(w, r, err)
+	} else {
+		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: &response}
+		Render(w, r, &restResponse)
+	}
+}
+
+func (c *BalanceApi) getById(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, parseErr := strconv.ParseInt(idStr, 10, 64)
+
+	if parseErr != nil {
+		RenderError(w, r, dto.InternalError(parseErr))
+		return
+	}
+
+	if response, err := c.balanceService.GetById(id); err != nil {
+		RenderError(w, r, err)
+	} else {
+		restResponse := dto.RestResponse[dto.BalanceGetResponse]{Data: &response}
+		Render(w, r, &restResponse)
+	}
+}

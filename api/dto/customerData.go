@@ -11,9 +11,9 @@ type CustomerGetRequest struct {
 	TelegramId *int64 `json:"telegramId,omitempty"`
 }
 
-func (c CustomerGetRequest) Bind(r *http.Request) error {
+func (c CustomerGetRequest) Bind(_ *http.Request) error {
 	if c.Id == nil && c.TelegramId == nil {
-		return errors.New("Missing required parameters")
+		return errors.New("missing required parameters")
 	}
 
 	return nil
