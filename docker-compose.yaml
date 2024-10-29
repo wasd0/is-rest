@@ -41,10 +41,10 @@ services:
     depends_on:
       backend:
         condition: service_started
-      redis:
+      cache:
         condition: service_started
   
-  redis:
+  cache:
     container_name: is-cache
     image: redis:7.4.1
     ports:
