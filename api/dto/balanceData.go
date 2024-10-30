@@ -2,7 +2,6 @@ package dto
 
 import (
 	"errors"
-	"math/big"
 	"net/http"
 )
 
@@ -35,7 +34,7 @@ type BalanceGetRequest struct {
 }
 
 type BalanceGetResponse struct {
-	BalanceId int64      `json:"balanceId"`
-	Currency  string     `json:"currency"`
-	Sum       *big.Float `json:"sum"`
+	BalanceId int64   `json:"balanceId"`
+	Currency  string  `json:"currency"`
+	Sum       *string `json:"sum"`
 }

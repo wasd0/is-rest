@@ -14,9 +14,10 @@ func BalanceToCreateResponse(balance model.Balances, currency model.Currencies) 
 }
 
 func BalanceToGetResponse(balance model.Balances, currency model.Currencies) *dto.BalanceGetResponse {
+	sum := utils.GetAmountFloat(balance.Sum, currency.Dimension).String()
 	return &dto.BalanceGetResponse{
 		BalanceId: balance.ID,
 		Currency:  currency.Code,
-		Sum:       utils.GetAmountFloat(balance.Sum, currency.Dimension),
+		Sum:       &sum,
 	}
 }
