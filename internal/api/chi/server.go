@@ -6,11 +6,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/wasd0/is-common/pkg/app"
+	"github.com/wasd0/is-common/pkg/config"
+	"github.com/wasd0/is-common/pkg/logger"
 	"net/http"
 	"wasd0/is-rest/internal/app/apiProvider"
-	"wasd0/is-rest/pkg/app"
-	"wasd0/is-rest/pkg/config"
-	"wasd0/is-rest/pkg/logger"
 )
 
 type Server struct {

@@ -3,8 +3,8 @@ package repoProvider
 import (
 	"database/sql"
 	"errors"
+	"github.com/wasd0/is-common/pkg/logger"
 	"wasd0/is-rest/internal/repository"
-	"wasd0/is-rest/pkg/logger"
 )
 
 var isInitialized = false

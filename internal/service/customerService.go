@@ -3,13 +3,13 @@ package service
 import (
 	"errors"
 	"github.com/go-jet/jet/v2/qrm"
+	"github.com/wasd0/is-common/pkg/logger"
+	"github.com/wasd0/is-common/pkg/utils/clock"
 	"wasd0/is-rest/api/dto"
 	"wasd0/is-rest/internal/entity/.gen/is/public/model"
 	"wasd0/is-rest/internal/keys"
 	"wasd0/is-rest/internal/mapper"
 	"wasd0/is-rest/internal/repository"
-	"wasd0/is-rest/pkg/logger"
-	"wasd0/is-rest/pkg/utils/clock"
 )
 
 type CustomerService interface {

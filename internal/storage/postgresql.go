@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/wasd0/is-common/pkg/app"
+	"github.com/wasd0/is-common/pkg/logger"
 	"log"
 	"os"
 	"wasd0/is-rest/internal/keys"
-	"wasd0/is-rest/pkg/app"
-	"wasd0/is-rest/pkg/logger"
 )
 
 const (

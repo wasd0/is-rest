@@ -1,8 +1,8 @@
 package dto
 
 import (
+	"github.com/wasd0/is-common/pkg/logger"
 	"time"
-	"wasd0/is-rest/pkg/logger"
 )
 
 type ServErr struct {

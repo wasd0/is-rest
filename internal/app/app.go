@@ -2,6 +2,10 @@ package app
 
 import (
 	"context"
+	"github.com/wasd0/is-common/pkg/app"
+	"github.com/wasd0/is-common/pkg/config"
+	"github.com/wasd0/is-common/pkg/logger"
+	"github.com/wasd0/is-common/pkg/logger/zero"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,10 +14,6 @@ import (
 	"wasd0/is-rest/internal/app/repoProvider"
 	"wasd0/is-rest/internal/app/serviceProvider"
 	"wasd0/is-rest/internal/storage"
-	"wasd0/is-rest/pkg/app"
-	"wasd0/is-rest/pkg/config"
-	"wasd0/is-rest/pkg/logger"
-	"wasd0/is-rest/pkg/logger/zero"
 )
 
 func Startup() {

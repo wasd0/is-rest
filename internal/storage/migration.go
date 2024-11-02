@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/pressly/goose/v3"
+	"github.com/wasd0/is-common/pkg/logger"
 	"os"
 	"wasd0/is-rest/internal/keys"
-	"wasd0/is-rest/pkg/logger"
 )
 
 type gooseLogger struct {

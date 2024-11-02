@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
+	"github.com/wasd0/is-common/pkg/logger"
 	"net/http"
 	"wasd0/is-rest/api/dto"
-	"wasd0/is-rest/pkg/logger"
 )
 
 type ChiApi interface {

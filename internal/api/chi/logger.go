@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/pkg/errors"
+	"github.com/wasd0/is-common/pkg/logger"
 	"net/http"
 	"time"
-	"wasd0/is-rest/pkg/logger"
 )
 
 type LogFormatterImpl struct {
