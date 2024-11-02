@@ -1,12 +1,11 @@
 package config
 
 import (
-	"os"
-	"time"
-	"wasd0/is-rest/pkg/consts"
-
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
+	"os"
+	"time"
+	"wasd0/is-rest/internal/keys"
 )
 
 const (
@@ -41,7 +40,7 @@ func MustRead() *Config {
 		}
 	}
 
-	configPath := os.Getenv(consts.EnvConfig)
+	configPath := os.Getenv(keys.EnvConfig)
 
 	if len(configPath) == 0 {
 		panic("Config file path not found in environment")

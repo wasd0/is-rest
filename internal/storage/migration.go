@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/pressly/goose/v3"
 	"os"
+	"wasd0/is-rest/internal/keys"
 	"wasd0/is-rest/pkg/logger"
 )
 
@@ -28,7 +29,7 @@ func Migrate(db *sql.DB) {
 
 	goose.SetLogger(&gooseLogger{})
 
-	migrationsPath := os.Getenv("MIGRATIONS_PATH")
+	migrationsPath := os.Getenv(keys.EnvMigrationsPath)
 
 	if err := goose.Up(db, migrationsPath); err != nil {
 		logger.Log().Fatal(err, "goose.Up")

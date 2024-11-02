@@ -6,13 +6,13 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"log"
 	"os"
+	"wasd0/is-rest/internal/keys"
 	"wasd0/is-rest/pkg/app"
 	"wasd0/is-rest/pkg/logger"
 )
 
 const (
 	DbDriver = "pgx"
-	dbUrl    = "DB_URL"
 )
 
 type PgStorage struct {
@@ -20,7 +20,7 @@ type PgStorage struct {
 }
 
 func MustOpenPostgres() (*PgStorage, app.Callback) {
-	dbUrl := os.Getenv(dbUrl)
+	dbUrl := os.Getenv(keys.EnvDbUrl)
 
 	db, err := sql.Open(DbDriver, dbUrl)
 
