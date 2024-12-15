@@ -57,7 +57,7 @@ func (b *balanceServiceImpl) GetByCustomerAndCurrency(request dto.BalanceGetRequ
 		if request.CustomerId != nil {
 			if balance, balanceErr := b.balanceRepository.FindByCustomerAndCurrency(*request.CustomerId, currency.ID); balanceErr != nil {
 				if errors.Is(balanceErr, qrm.ErrNoRows) {
-					return nil, dto.BadRequest(balanceErr, "balance not found by customer and currency")
+					return nil, dto.NotFound("balance not found by customer and currency")
 				} else {
 					return nil, dto.InternalError(balanceErr)
 				}

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"net/http"
@@ -52,7 +53,7 @@ func (c *BalanceApi) getByCustomer(w http.ResponseWriter, r *http.Request) {
 		request.CurrencyCode = &currency
 	}
 	if customerId == "" && telegramId == "" {
-		RenderError(w, r, dto.BadRequest(nil, "missing customer id or telegram id"))
+		RenderError(w, r, dto.BadRequest(errors.New("missing telegram id or customer id"), "missing customer id or telegram id"))
 		return
 	}
 	if customerId != "" {
