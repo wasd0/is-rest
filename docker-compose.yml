@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  database:
+    image: postgres:15.0
+    container_name: is-db
+    environment:
+      POSTGRES_DB: "is"
+      POSTGRES_USER: "wasd"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5732:5432"
+    networks:
+      is:
+        aliases:
+          - "isdb"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  
+  backend:
+    container_name: is-rest
+    image: wasd0/is-rest
+    ports:
+      - '8400:8400'
+    networks:
+      - is
+    depends_on:
+      database:
+        condition: service_healthy
+  
+  bot:
+    container_name: is-tgbot
+    image: wasd0/is-tgbot
+    ports:
+      - '8500:8500'
+    networks:
+      - is
+    depends_on:
+      backend:
+        condition: service_started
+      cache:
+        condition: service_started
+  
+  cache:
+    container_name: is-cache
+    image: redis:7.4.1
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_PASSWORD: 123
+      REDIS_USER: default
+    command: redis-server --save 20 1 --loglevel warning --requirepass 123 --protected-mode yes
+    networks:
+      is:
+        aliases:
+          - "iscache"
+
+networks:
+  is:
+    driver: bridge

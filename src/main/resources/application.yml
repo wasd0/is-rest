@@ -1,0 +1,32 @@
+server:
+  port: 8400
+
+spring:
+  application:
+    name: Infinity SMS service
+  threads:
+    virtual:
+      enabled: false
+  
+  datasource:
+    username: wasd
+    password: 123
+    url: jdbc:postgresql://localhost:5732/is
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 50
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  liquibase:
+    change-log: classpath:db/changelogs/changelog-master.xml
+  
+  web:
+    locale: en
+  
+  
