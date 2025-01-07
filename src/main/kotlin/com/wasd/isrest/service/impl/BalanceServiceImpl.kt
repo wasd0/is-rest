@@ -52,7 +52,7 @@ class BalanceServiceImpl(
         if (balance != null) {
             return balanceMapper.toGetResponse(balance)
         }
-        throw NotFoundException("Balance not found by data: ${Logger.tryConvertJsonToString(request)}")
+        throw NotFoundException("${Logger.tryConvertJsonToString(request)}")
     }
 
     override fun getById(id: Long): BalanceGetResponse {
