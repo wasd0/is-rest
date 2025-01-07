@@ -8,4 +8,5 @@
     </preConditions>
 
     <include relativeToChangelogFile="true" file="2025-01-04/changelog.xml"/>
+    <include relativeToChangelogFile="true" file="2025-01-07/changelog.xml"/>
 </databaseChangeLog>
