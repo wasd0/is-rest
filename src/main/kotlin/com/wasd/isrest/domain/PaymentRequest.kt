@@ -33,6 +33,10 @@ class PaymentRequest {
     var currency: Currency? = null
 
     @ManyToOne
+    @JoinColumn(name = "balance_id", nullable = false)
+    var balance: Balance? = null
+    
+    @ManyToOne
     @JoinColumn(name = "status", nullable = false)
     @NotNull
     var status: Reference? = null

@@ -19,18 +19,6 @@ services:
       timeout: 5s
       retries: 5
   
-  
-  backend:
-    container_name: is-rest
-    image: wasd0/is-rest
-    ports:
-      - '8400:8400'
-    networks:
-      - is
-    depends_on:
-      database:
-        condition: service_healthy
-  
   bot:
     container_name: is-tgbot
     image: wasd0/is-tgbot
