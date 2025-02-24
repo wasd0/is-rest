@@ -12,22 +12,22 @@ import org.jetbrains.annotations.NotNull
 
 @Entity
 @Table(name = "balances")
-class Balance {
+data class Balance (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Long? = null,
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     @NotNull
-    var customer: Customer? = null
+    var customer: Customer? = null,
     
     @Column(name = "sum")
     @NotNull
-    var sum: Long = 0
+    var sum: Long = 0,
     
     @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
     @NotNull
     var currency: Currency? = null
-}
+)

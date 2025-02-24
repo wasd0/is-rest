@@ -12,18 +12,18 @@ import org.hibernate.annotations.ColumnDefault
 
 @Entity
 @Table(name = "ref_headers")
-class RefHeader {
+data class RefHeader (
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private var id: Int? = null
+    var id: Int? = null,
     
     @Column(name = "name")
     @NotBlank
     @Size(min = 1, max = 100)
-    private var name: String? = null
+    var name: String? = null,
     
     @Column(name = "is_active")
     @ColumnDefault("false")
     var isActive: Boolean? = null
-}
+)
