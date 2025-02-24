@@ -5,7 +5,7 @@ import java.math.RoundingMode
 import kotlin.math.pow
 
 object CurrencyUtils {
-    
+
     fun convertAmount(amount: Long, dimension: Int): BigDecimal {
         return BigDecimal(amount)
             .divide(
@@ -13,5 +13,9 @@ object CurrencyUtils {
                 dimension,
                 RoundingMode.HALF_DOWN
             ).stripTrailingZeros()
+    }
+
+    fun convertAmount(amount: BigDecimal, dimension: Int): Long {
+        return amount.multiply(BigDecimal.TEN.pow(dimension)).toLong()
     }
 }

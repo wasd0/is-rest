@@ -38,14 +38,13 @@ class BalanceServiceImpl(
         return balanceMapper.toCreateResponse(balance)
     }
 
-    override fun getByCustomerAndCurrency(request: BalanceGetRequest): BalanceGetResponse {
+    override fun getDataByCustomerAndCurrency(request: BalanceGetRequest): BalanceGetResponse {
         val currencyCode = request.currencyCode ?: CurrencyKeys.CODE_RUB
-        val currency = currencyService.getByCode(currencyCode)
         var balance: Balance? = null
         if (request.customerId != null) {
-            balance = balanceRepository.findByCustomer_IdAndCurrency(request.customerId, currency)
-                ?: throw NotFoundException("Customer: ${request.customerId}, Currency code: ${currency.code}")
+            balance = getByCustomerIdAndCurrencyCode(request.customerId, currencyCode)
         } else if (request.telegramId != null) {
+            val currency = currencyService.getByCode(currencyCode)
             balance = balanceRepository.findByCustomer_TelegramIdAndCurrency(request.telegramId, currency)
                 ?: throw NotFoundException("Telegram id: ${request.telegramId}, Currency code: ${currency.code}")
         }
@@ -53,6 +52,13 @@ class BalanceServiceImpl(
             return balanceMapper.toGetResponse(balance)
         }
         throw NotFoundException("${Logger.tryConvertJsonToString(request)}")
+    }
+
+    override fun getByCustomerIdAndCurrencyCode(customerId: Long, currencyCode: String): Balance {
+        val currency = currencyService.getByCode(currencyCode)
+        val balance = balanceRepository.findByCustomer_IdAndCurrency(customerId, currency)
+            ?: throw NotFoundException("Customer: ${customerId}, Currency code: ${currency.code}")
+        return balance;
     }
 
     override fun getById(id: Long): BalanceGetResponse {

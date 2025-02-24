@@ -30,6 +30,6 @@ class BalanceController(private val balanceService: BalanceService) {
 
     @GetMapping
     fun getByCustomer(@ModelAttribute request: BalanceGetRequest): RestResponse<BalanceGetResponse> {
-        return RestResponse(balanceService.getByCustomerAndCurrency(request))
+        return RestResponse(balanceService.getDataByCustomerAndCurrency(request))
     }
 }

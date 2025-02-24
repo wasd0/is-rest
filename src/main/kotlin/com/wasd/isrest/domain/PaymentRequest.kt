@@ -8,6 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.validation.constraints.Min
 import org.jetbrains.annotations.NotNull
 import java.time.ZonedDateTime
 import java.util.*
@@ -23,8 +24,9 @@ class PaymentRequest {
     @Column(name = "external_id")
     var externalId: String? = null
 
-    @Column(name = "sum")
+    @Column(name = "sum", )
     @NotNull
+    @Min(value = 1, message = "Payment request sum must be positive")
     var sum: Long? = null
 
     @ManyToOne
