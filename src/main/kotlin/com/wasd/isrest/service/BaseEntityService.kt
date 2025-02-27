@@ -7,4 +7,6 @@ interface BaseEntityService<ENTITY, ID> {
     fun findEntity(id: ID): ENTITY?
 
     fun save(entity: ENTITY): ENTITY
+    
+    fun saveAll(entities: List<ENTITY>)
 }

@@ -1,5 +1,6 @@
 package com.wasd.isrest.controller
 
+import com.wasd.isrest.model.PaymentRequestListItem
 import com.wasd.isrest.model.PaymentRequestSingleData
 import com.wasd.isrest.model.RestResponse
 import com.wasd.isrest.model.request.PaymentRequestInitiateRequest
@@ -26,5 +27,10 @@ class PaymentRequestController(val paymentRequestService: PaymentRequestService)
     @GetMapping("{id}")
     fun getById(@PathVariable("id") id: UUID): RestResponse<PaymentRequestSingleData> {
         return RestResponse(paymentRequestService.getSingleDataById(id))
+    }
+    
+    @GetMapping
+    fun findAll(): RestResponse<List<PaymentRequestListItem>> {
+        return RestResponse(paymentRequestService.findAll())
     }
 }

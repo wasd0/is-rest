@@ -5,10 +5,12 @@ import com.wasd.isrest.exception.NotFoundException
 import com.wasd.isrest.keys.RefHeaderKeys
 import com.wasd.isrest.keys.RefKeys
 import com.wasd.isrest.mapper.PaymentRequestMapper
+import com.wasd.isrest.model.PaymentRequestListItem
 import com.wasd.isrest.model.PaymentRequestSingleData
 import com.wasd.isrest.model.request.PaymentRequestInitiateRequest
 import com.wasd.isrest.model.response.PaymentRequestInitiateResponse
 import com.wasd.isrest.repository.PaymentRequestRepository
+import com.wasd.isrest.service.AbstractBaseEntityService
 import com.wasd.isrest.service.BalanceService
 import com.wasd.isrest.service.CurrencyService
 import com.wasd.isrest.service.PaymentRequestService
@@ -16,6 +18,7 @@ import com.wasd.isrest.utils.CurrencyUtils
 import com.wasd.isrest.utils.DateTimeHolder
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
+import java.time.ZonedDateTime
 import java.util.*
 
 @Service
@@ -26,7 +29,7 @@ class PaymentRequestServiceImpl(
     private val referenceService: ReferenceService,
     private val paymentRequestRepository: PaymentRequestRepository,
     private val paymentRequestMapper: PaymentRequestMapper
-) : PaymentRequestService {
+) : AbstractBaseEntityService<PaymentRequest, UUID>(paymentRequestRepository), PaymentRequestService {
 
     override fun initiate(request: PaymentRequestInitiateRequest): PaymentRequestInitiateResponse {
 
@@ -50,6 +53,29 @@ class PaymentRequestServiceImpl(
             paymentRequestRepository.findById(id).orElseThrow { NotFoundException("Payment request id: $id") }
 
         return paymentRequestMapper.paymentRequestToSingleData(paymentRequest)
+    }
+
+    override fun findAllExpired(
+        thresholdDate: ZonedDateTime,
+        thresholdDate2: ZonedDateTime
+    ): List<PaymentRequest> {
+        return paymentRequestRepository.findAllExpired(thresholdDate, thresholdDate2)
+    }
+
+    override fun findAll(): List<PaymentRequestListItem> {
+        return paymentRequestRepository.findAll().map { paymentRequestMapper.paymentRequestToListItem(it) }
+    }
+
+    override fun save(entity: PaymentRequest): PaymentRequest {
+        entity.updatedAt = dateTimeHolder.now()
+        return super.save(entity)
+    }
+
+    override fun saveAll(entities: List<PaymentRequest>) {
+        for (request in entities) {
+            request.updatedAt = dateTimeHolder.now()
+        }
+        super.saveAll(entities)
     }
 
     private fun createPaymentRequest(

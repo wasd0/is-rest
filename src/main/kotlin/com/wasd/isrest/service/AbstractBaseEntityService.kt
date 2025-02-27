@@ -3,7 +3,7 @@ package com.wasd.isrest.service
 import com.wasd.isrest.exception.NotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 
-abstract  class AbstractBaseEntityService<ENTITY : Any, ID : Any> protected constructor(
+abstract class AbstractBaseEntityService<ENTITY : Any, ID : Any> protected constructor(
     private val entityRepository: JpaRepository<ENTITY, ID>,
 ) : BaseEntityService<ENTITY, ID> {
 
@@ -17,5 +17,9 @@ abstract  class AbstractBaseEntityService<ENTITY : Any, ID : Any> protected cons
 
     override fun save(entity: ENTITY): ENTITY {
         return entityRepository.save(entity)
+    }
+
+    override fun saveAll(entities: List<ENTITY>) {
+        entityRepository.saveAll(entities)
     }
 }
