@@ -28,5 +28,8 @@ spring:
   
   web:
     locale: en
-  
-  
+
+time:
+  scheduler:
+    timer:
+      paymentRequestExpire: 300
